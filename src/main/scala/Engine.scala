@@ -41,6 +41,7 @@ case class Query(
   // expireDateName value and availableDateName value, all are ISO 8601 dates
   dateRange: Option[DateRange] = None, // optional before and after filter applied to a date field
   blacklistItems: Option[List[String]] = None, // default: whatever is in algorithm params or None
+  whitelistItems: Option[List[String]] = None, // default: None
   returnSelf: Option[Boolean] = None, // means for an item query should the item itself be returned, defaults
   // to what is in the algorithm params or false
   num: Option[Int] = None, // default: whatever is in algorithm params, which itself has a default--probably 20

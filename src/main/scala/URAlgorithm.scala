@@ -653,7 +653,14 @@ class URAlgorithm(val ap: URAlgorithmParams)
 
     val filteringMetadata = getFilteringMetadata(query)
     val filteringDateRange = getFilteringDateRange(query)
-    val allFilteringCorrelators = recentUserHistoryFilter ++ similarItemsFilter ++ filteringMetadata
+    val whiteListItemFilters: Seq[FilterCorrelators] = {
+      if (query.whitelistItems.isEmpty) {
+        Seq.empty
+      } else {
+        Seq(FilterCorrelators("id", query.whitelistItems.getOrEmpty))
+      }
+    }
+    val allFilteringCorrelators = recentUserHistoryFilter ++ similarItemsFilter ++ whiteListItemFilters ++ filteringMetadata
 
     val mustFields: Seq[JValue] = allFilteringCorrelators.map {
       case FilterCorrelators(actionName, itemIDs) =>
