@@ -226,7 +226,7 @@ class URAlgorithm(val ap: URAlgorithmParams)
     } else ap.eventNames.get
   } else ap.indicators.get.map(_.name)
 
-  val blacklistEvents = ap.blacklistEvents.getOrElse(Seq(modelEventNames.head)) // empty Seq[String] means no blacklist
+  // val blacklistEvents = ap.blacklistEvents.getOrElse(Seq(modelEventNames.head)) // empty Seq[String] means no blacklist
   val returnSelf: Boolean = ap.returnSelf.getOrElse(DefaultURAlgoParams.ReturnSelf)
   val fields: Seq[Field] = ap.fields.getOrEmpty
 
@@ -270,7 +270,7 @@ class URAlgorithm(val ap: URAlgorithmParams)
     ("Random seed", randomSeed),
     ("MaxCorrelatorsPerEventType", maxCorrelatorsPerEventType),
     ("MaxEventsPerEventType", maxEventsPerEventType),
-    ("BlacklistEvents", blacklistEvents),
+    // ("BlacklistEvents", blacklistEvents),
     ("══════════════════════════════", "════════════════════════════"),
     ("User bias", userBias),
     ("Item bias", itemBias),
@@ -697,6 +697,8 @@ class URAlgorithm(val ap: URAlgorithmParams)
 
   /** Create a list of item ids that the user has interacted with or are not to be included in recommendations */
   def getExcludedItems(userEvents: Seq[Event], query: Query): Seq[String] = {
+
+    val blacklistEvents = query.blacklistEvents.getOrElse(Seq(modelEventNames.head))
 
     val blacklistedItems = userEvents.filterNot { event =>
       // either a list or an empty list of filtering events so honor them
